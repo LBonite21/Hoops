@@ -1,7 +1,7 @@
-module.exports = function(app) {
-    const controller = require("./controllers/controller");
+"use strict";
 
-    app.route('/')
-    .get(controller.list)
-    // .post(controller.handleSignIn)
-}
+const { health } = require("./controllers/controller");
+
+module.exports = function registerRoutes(app) {
+  app.get("/health", health);
+};

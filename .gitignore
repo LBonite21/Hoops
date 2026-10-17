@@ -99,3 +99,15 @@ dist
 
 # DynamoDB Local files
 .dynamodb/
+
+# Private configuration and account exports
+.env*
+!.env.example
+Hoops/Importing/*.csv
+Hoops/Importing/*.tsv
+**/credentials.json
+**/*secrets*.json
+*.pem
+*.key
+__pycache__/
+*.pyc

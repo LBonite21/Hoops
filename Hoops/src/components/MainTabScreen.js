@@ -9,6 +9,7 @@ const Tab = createBottomTabNavigator();
 
 export default function MainTabScreen({ navigation }) {
   return (
+    // Screen Tab
     <Tab.Navigator
       initialRouteName="Map"
       screenOptions={({ route }) => ({

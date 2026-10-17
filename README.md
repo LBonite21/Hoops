@@ -1,1 +1,1 @@
-# Hoops-Capstone
+# Hoops

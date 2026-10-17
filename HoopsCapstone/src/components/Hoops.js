@@ -1,47 +1,20 @@
 import React, { useEffect } from "react";
 import {
-  Text,
   View,
-  Image,
-  Dimensions,
   StyleSheet,
-  TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ScrollView } from "react-native-gesture-handler";
-import * as Font from "expo-font";
 
 import { AuthContext } from "./context";
 
 import RootStackScreen from "./RootStackScreen";
-import MapScreen from "./MapScreen";
-import HomeScreen from "./NewsScreen";
 import { DrawerContent } from "./DrawerContent";
 import MainTabScreen from "./MainTabScreen";
-
-const OriginalSignUpScreen = ({ navigation, route }) => {
-  return (
-    <View>
-      <Text>Sign-Up Screen</Text>
-    </View>
-  );
-};
-
-const OgMapScreen = ({ navigation, route }) => {
-  return (
-    <View>
-      <Text>Map Screen</Text>
-    </View>
-  );
-};
-
-const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const Hoops = () => {
@@ -94,13 +67,10 @@ const Hoops = () => {
   const authContext = React.useMemo(
     () => ({
       signIn: async (username, password) => {
-        // setUserToken("fasdf");
-        // setIsLoading(false);
-        let userToken;
-        userToken = null;
-        if (username == "User" && password == "Pass") {
+        let userToken = null;
+        if (username.trim() && password.length >= 4) {
           try {
-            userToken = "dadfd";
+            userToken = `local-${Date.now()}`;
             await AsyncStorage.setItem("userToken", userToken);
           } catch (e) {
             console.log(e);
@@ -120,19 +90,16 @@ const Hoops = () => {
         dispatch({ type: "LOGOUT" });
       },
       signUp: async (email, username, password) => {
-        // setUserToken("fasdf");
-        // setIsLoading(false);
-        //send data to back end
-        //after sign up login
-
-        dispatch({ type: "REGISTER", id: username, token: userToken})
+        const userToken = `local-${Date.now()}`;
+        await AsyncStorage.setItem("userToken", userToken);
+        dispatch({ type: "REGISTER", id: username, token: userToken });
       },
     }),
     []
   );
 
   useEffect(() => {
-    setTimeout(async () => {
+    const timer = setTimeout(async () => {
       // setIsLoading(false);
       let userToken;
       userToken = null;
@@ -143,7 +110,8 @@ const Hoops = () => {
       }
       // console.log('user token: ', userToken)
       dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
-    }, 1000);
+    }, 300);
+    return () => clearTimeout(timer);
   }, []);
 
   if (loginState.isLoading) {
@@ -158,7 +126,10 @@ const Hoops = () => {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {loginState.userToken != null ? (
-          <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+          <Drawer.Navigator
+            drawerContent={(props) => <DrawerContent {...props} />}
+            screenOptions={{ headerShown: false }}
+          >
             <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
           </Drawer.Navigator>
           // <Stack.Navigator>

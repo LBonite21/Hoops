@@ -39,7 +39,7 @@ The app runs on **iOS and Android**, with a simplified browser experience for fi
 | UI assets | Expo Vector Icons, Expo Font, custom images and typefaces |
 | Separate legacy server prototype | Node.js, Express, MongoDB/Mongoose, bcrypt |
 
-The `Hoops/server/` directory contains an older server-side prototype. **It is not integrated with the current Expo app**, and the steps below do not require it.
+The `Hoops/server/` directory contains an older server-side prototype. **It is not integrated with the current Expo app**, and the steps below do not require it. The legacy server currently offers only a localhost-bound `/health` endpoint; account listing and legacy authentication routes are disabled.
 
 ## Getting started
 
@@ -126,3 +126,10 @@ The [UX/UI design directory](UX_UI%20Design/) contains the original **Adobe XD**
 ## Author
 
 Created by [Lemuel Bonite](https://github.com/LBonite21).
+
+## Security and privacy
+
+- **Demo authentication only:** The app's login/signup flow creates a locally stored demonstration session; it does not authenticate against the server or create real accounts. Do not enter real passwords.
+- **Legacy API:** The optional backend listens on `127.0.0.1` by default and exposes only `GET /health`. Set `HOST` only when you intentionally need a different bind address; it has no production authentication endpoints.
+- **Private configuration:** Never commit database credentials, keys, or user CSV exports. The optional import utility requires `MONGODB_URI` supplied through the environment and a private CSV path supplied at runtime.
+- **Production readiness:** Server-validated authentication, role-based authorization, secure credential storage, input validation, dependency maintenance, and abuse protections must be designed and tested before deploying account features.
